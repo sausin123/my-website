@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        
+body {
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    background: url('../img/image.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    
+    padding: 0;
+    color: #302d2d;
+}
+
+
+
+.cart-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    max-height: 400px;
+    background:rgb(230, 227, 227);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(72, 69, 69, 0.6);
+}
+
+
+#homeButton {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.home-btn {
+    width: 50px; 
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.home-btn:hover {
+    transform: scale(1.1);
+}
+
+
+.cart-container h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #242423; 
+    margin-bottom: 1rem;
+    background: #2c2929e1; 
+    -webkit-background-clip: text;
+   
+    -webkit-text-fill-color: transparent;
+}
+
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    color: #000000f6;
+}
+
+.cart-table th, .cart-table td {
+    padding: 1rem;
+    text-align: center;
+}
+
+.cart-table th {
+    background: rgba(43, 52, 55, 0.849);
+    color: rgb(241, 240, 240);
+    text-transform: uppercase;
+}
+
+.cart-table tr:nth-child() {
+    background: rgba(156, 89, 89, 0.442);
+}
+
+
+.cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.checkout-btn {
+    background: rgba(55, 66, 77, 0.873);
+    padding: 1rem 2rem;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.checkout-btn:disabled {
+    background: gray;
+    cursor: not-allowed;
+}
+
+.checkout-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+
+.quantity-btn {
+    background: rgba(241, 99, 99, 0.753);
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.quantity-btn:hover {
+    background: rgba(255, 107, 107, 0.5);
+}
+
+.quantity-text {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(201, 197, 197, 0.652);
+    padding: 2rem;
+    border-radius: 20px;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(90, 89, 89, 0.3);
+    display: none;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: #242423;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.modal button {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    background: rgba(66, 80, 91, 0.809);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+
+.checkout-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(11, 11, 11, 0.9);
+    padding: 2rem;
+    border-radius: 20px;
+    width: 400px;
+    max-width: 90%;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    display: none;
+    text-align: center;
+}
+
+.checkout-modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.checkout-modal p {
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.checkout-modal input,
+.checkout-modal select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.checkout-modal input:focus,
+.checkout-modal select:focus {
+    border-color: #ff6b6b;
+    outline: none;
+}
+
+.checkout-modal button {
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.checkout-modal button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+
+    </style>
+</head>
+<body>
+    
+    <div class="cart-container">
+        <a href="../html/menu.html" id="homeButton">
+            <img src="../img/home.png" alt="Home" class="home-btn">
+        </a>
+        
+        <h2>Shopping Cart</h2>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Rate (₹)</th>
+                    <th>Quantity</th>
+                    <th>Price (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items">
+                
+            </tbody>
+        </table>
+        
+        <h3>Total: ₹<span id="cart-total">0.00</span></h3>
+        <button id="checkoutButton" class="checkout-btn" disabled>Proceed to Checkout</button>
+        
+<div id="orderTypeModal" class="modal">
+    <h2>Choose Order Type</h2>
+    <button onclick="window.location.href='finalpayment.html'">Home Delivery</button>
+
+    <button onclick="window.location.href='payment.html'">Dine In</button>
+
+</div>
+
+
+<div id="paymentModal" class="modal">
+    <h2>Select Payment Method</h2>
+    <button onclick="processPayment()">Pay with Card</button>
+    <button onclick="processPayment()">Pay with UPI</button>
+    <button onclick="processPayment()">Pay with Cash</button>
+</div>
+
+       
+<div id="checkout-modal" class="checkout-modal">
+    <h2>Checkout</h2>
+    <p>Your selected order type: <strong id="order-type-text"></strong></p>
+
+    <label for="customer-name">Name:</label>
+    <input type="text" id="customer-name" placeholder="Enter your name">
+
+    <label for="payment-method">Payment Method:</label>
+    <select id="payment-method">
+        <option value="cash">Cash</option>
+        <option value="card">Card</option>
+        <option value="upi">UPI</option>
+    </select>
+
+    <button onclick="finalizeOrder()">Confirm Order</button>
+    <button id="close-modal">Close</button>
+</div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    displayCart();
+
+    let checkoutButton = document.getElementById('checkoutButton');
+    if (checkoutButton) {
+        checkoutButton.addEventListener('click', openOrderTypeModal);
+    }
+});
+
+
+function displayCart() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cartItems = document.getElementById('cart-items');
+    let cartTotal = document.getElementById('cart-total');
+    let checkoutButton = document.getElementById('checkoutButton');
+
+    if (!cartItems || !cartTotal || !checkoutButton) {
+        console.error("Cart elements not found in DOM!");
+        return;
+    }
+
+    cartItems.innerHTML = ''; 
+    let total = 0;
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<tr><td colspan="4" style="text-align: center;">Your cart is empty.</td></tr>';
+        cartTotal.textContent = "0.00";
+        checkoutButton.disabled = true;
+        return;
+    }
+
+    cart.forEach((item, index) => {
+        if (!item.quantity) item.quantity = 1; 
+
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${item.name}</td>
+            <td>₹${item.price.toFixed(2)}</td>
+            <td>
+                <div class="quantity-controls">
+                    <button onclick="updateQuantity(${index}, ${item.quantity - 1})">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="updateQuantity(${index}, ${item.quantity + 1})">+</button>
+                </div>
+            </td>
+            <td>₹${(item.price * item.quantity).toFixed(2)}</td>
+        `;
+        cartItems.appendChild(row);
+        total += item.price * item.quantity;
+    });
+
+    cartTotal.textContent = total.toFixed(2);
+    checkoutButton.disabled = (cart.length === 0);
+}
+document.addEventListener('DOMContentLoaded', function() {
+    let homeButton = document.getElementById('homeButton');
+    if (homeButton) {
+        homeButton.addEventListener('click', function() {
+            window.location.href = 'try.html'; 
+        });
+    }
+});
+
+
+function updateQuantity(index, newQuantity) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (newQuantity <= 0) {
+        cart.splice(index, 1); 
+    } else {
+        cart[index].quantity = newQuantity;
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    displayCart(); 
+}
+
+
+function openOrderTypeModal() {
+    document.getElementById('orderTypeModal').classList.add('active');
+}
+
+
+function selectOrderType(orderType) {
+    localStorage.setItem('orderType', orderType);
+    document.getElementById('orderTypeModal').classList.remove('active');
+
+    
+    openPaymentModal();
+}
+
+
+function openPaymentModal() {
+    document.getElementById('paymentModal').classList.add('active');
+}
+
+
+function processPayment() {
+    alert("Payment successful! Order Type: " + localStorage.getItem('orderType'));
+    localStorage.setItem('cart', JSON.stringify([])); 
+    displayCart();
+    document.getElementById('paymentModal').classList.remove('active');
+}
+
+    </script>
+
+</body>
+</html>

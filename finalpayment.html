@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family:  'Playfair Display', serif;
+            background: url('../img/MENU1.jpg') no-repeat center center fixed; 
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .container {
+            background: #b5b3b1ba;
+            padding: 30px;
+            border-radius: 10px;
+            
+            
+            width: 550px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 12px;
+            background-color: rgb(42, 52, 62);
+            color: beige;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #2d3f53; }
+        input {
+            width: 95%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .card-details input {
+            width: 95%;
+        }
+        .hidden { display: none; }
+        .error { color: red; font-size: 14px; }
+        #tracking-popup {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        #tracking-message {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: skyblue;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="delivery-box">
+        <h2>Select Delivery Option</h2>
+        <button onclick="chooseDelivery('pickup')">Pickup</button>
+        <button onclick="chooseDelivery('home-delivery')">Home Delivery</button>
+       
+    <div id="pickup-fields" class="hidden">
+        <input type="text" id="pickup-name" placeholder="Enter Your Name" required />
+        <span class="error" id="pickup-name-error"></span>
+        
+        <input type="email" id="pickup-email" placeholder="Enter Your Email" required />
+        <span class="error" id="pickup-email-error"></span>
+        
+        <input type="text" id="pickup-phone" placeholder="Enter Your Contact Number" required />
+        <span class="error" id="pickup-phone-error"></span>
+        
+        <button onclick="window.location.href='payment.html'">Confirm Pickup</button>
+    </div>
+
+    
+        
+        <div id="delivery-fields" class="hidden">
+            <input type="text" id="customer-name" placeholder="Enter Your Name" required />
+            <span class="error" id="name-error"></span>
+            
+            <input type="email" id="customer-email" placeholder="Enter Your Email" required />
+            <span class="error" id="email-error"></span>
+            
+            <input type="text" id="phone" placeholder="Enter 10-digit Phone Number" required />
+            <span class="error" id="phone-error"></span>
+            
+            <input type="text" id="address" placeholder="Enter Delivery Address">
+            <span class="error" id="address-error"></span>
+            
+            <button onclick="window.location.href='payment.html'">Confirm</button>
+        </div>
+    </div>
+    
+    
+    <div class="container hidden" id="payment-box">
+        <h2>Restaurant Payment</h2>
+        <div id="order-message">Select your payment method.</div>
+        <div id="order-confirmation"></div>
+        <button id="cod-btn" onclick="showCashOnDelivery()">Cash on Delivery</button>
+        <button id="online-btn" onclick="showPaymentMethods()">Online Payment</button>
+        
+        <p id="message"></p>
+    </div>
+    
+    
+    <div id="tracking-popup" class="hidden">
+        <p>Wanna track your order?</p>
+        <button onclick="trackOrder()">Track Now</button>
+    </div>
+    
+    <div id="tracking-message" class="hidden">
+        Redirecting to the tracking page.
+    </div>
+    
+    <script>
+        function chooseDelivery(option) {
+    const pickupFields = document.getElementById("pickup-fields");
+    const deliveryFields = document.getElementById("delivery-fields");
+
+    if (option === "pickup") {
+        pickupFields.classList.remove("hidden");
+        deliveryFields.classList.add("hidden");
+    } else if (option === "home-delivery") {
+        deliveryFields.classList.remove("hidden");
+        pickupFields.classList.add("hidden");
+    }
+}
+
+function confirmPickup() {
+    const name = document.getElementById("pickup-name").value.trim();
+    const email = document.getElementById("pickup-email").value.trim();
+    const phone = document.getElementById("pickup-phone").value.trim();
+
+    let isValid = true;
+
+   
+    if (!name) {
+        document.getElementById("pickup-name-error").textContent = "Name is required.";
+        isValid = false;
+    } else {
+        document.getElementById("pickup-name-error").textContent = "";
+    }
+
+    
+    if (!email || !email.includes("@")) {
+        document.getElementById("pickup-email-error").textContent = "Valid email is required.";
+        isValid = false;
+    } else {
+        document.getElementById("pickup-email-error").textContent = "";
+    }
+
+    
+    if (!phone || phone.length !== 10 || isNaN(phone)) {
+        document.getElementById("pickup-phone-error").textContent = "Enter a valid contact number.";
+        isValid = false;
+    } else {
+        document.getElementById("pickup-phone-error").textContent = "";
+    }
+
+    if (isValid) {
+        alert(`Pickup Confirmed!\nName: ${name}\nEmail: ${email}\nPhone: ${phone}`);
+       
+    }
+}
+
+function confirmHomeDelivery() {
+    const name = document.getElementById("customer-name").value.trim();
+    const email = document.getElementById("customer-email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
+
+    let isValid = true;
+
+   
+    if (!name) {
+        document.getElementById("name-error").textContent = "Name is required.";
+        isValid = false;
+    } else {
+        document.getElementById("name-error").textContent = "";
+    }
+
+   
+    if (!email || !email.includes("@")) {
+        document.getElementById("email-error").textContent = "Valid email is required.";
+        isValid = false;
+    } else {
+        document.getElementById("email-error").textContent = "";
+    }
+
+   
+    if (!phone || phone.length !== 10 || isNaN(phone)) {
+        document.getElementById("phone-error").textContent = "Enter a valid contact number.";
+        isValid = false;
+    } else {
+        document.getElementById("phone-error").textContent = "";
+    }
+
+    
+    if (!address) {
+        document.getElementById("address-error").textContent = "Address is required for home delivery.";
+        isValid = false;
+    } else {
+        document.getElementById("address-error").textContent = "";
+    }
+
+    if (isValid) {
+        alert(`Home Delivery Confirmed!\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nAddress: ${address}`);
+        
+    }
+}
+
+
+        function showPaymentMethods() {
+            document.getElementById("order-message").innerText = "Choose a payment option:";
+            document.getElementById("order-confirmation").innerHTML = `
+                <button onclick="selectPayment('Google Pay / Paytm UPI', 'upi')">Google Pay / Paytm UPI</button>
+                <button onclick="selectPayment('QR Code Payment', 'qr')">QR Code Payment</button>
+                <button onclick="selectPayment('Credit/Debit Card', 'card')">Credit/Debit Card</button>
+            `;
+            document.getElementById("cod-btn").classList.add("hidden");
+            document.getElementById("online-btn").classList.add("hidden");
+        }
+
+        function showCashOnDelivery() {
+            document.getElementById("order-message").innerText = "You chose Cash on Delivery.";
+            document.getElementById("order-confirmation").innerHTML = `<button onclick="confirmOrder()">Place Order</button>`;
+            document.getElementById("online-btn").classList.add("hidden");
+            document.getElementById("cod-btn").classList.add("hidden");
+        }
+
+        function confirmOrder() {
+            document.getElementById("message").innerText = "Processing ...";
+            setTimeout(() => {
+                document.getElementById("message").innerText ="Your order is confirmed! You will be served soon.";
+                document.getElementById("tracking-popup").classList.remove("hidden");
+                setTimeout(() => {
+                    document.getElementById("tracking-popup").classList.add("hidden");
+                }, 4000);
+            },5000);
+        }
+        
+
+        function selectPayment(method, type) {
+            let confirmationDiv = document.getElementById("order-confirmation");
+            let inputField = "";
+
+            if (type === 'upi') {
+                inputField = `<input type='text' id='payment-input' placeholder='Enter UPI ID' required>
+                              <span class="error" id="upi-error"></span>`;
+            } else if (type === 'card') {
+                inputField = `
+                    <div class='card-details'>
+                        <input type='text' id='card-number' placeholder='Enter Card Number' required>
+                        <span class="error" id="card-error"></span>
+                        <input type='month' id='expiry-date' required>
+                        <input type='password' id='cvv' placeholder='CVV' maxlength='3' required>
+                    </div>
+                `;
+            } else if (type === 'qr') {
+                inputField = `<p>Scan the QR code below to complete the payment:</p>
+                              <img src="../img/qr.png" alt='QR Code' width='200'>`;
+            }
+
+            confirmationDiv.innerHTML = `<h3>Payment via ${method}</h3>${inputField}<button onclick="processPayment()">Pay Now</button>`;
+        }
+
+        function processPayment() {
+            document.getElementById("message").innerText = "Processing Payment...";
+            setTimeout(() => {
+                document.getElementById("message").innerText = "Your payment was successful!";
+                document.getElementById("tracking-popup").classList.remove("hidden");
+                setTimeout(() => {
+                    document.getElementById("tracking-popup").classList.add("hidden");
+                }, 4000);
+            }, 5000);
+        }
+        function trackOrder() {
+            document.getElementById("tracking-message").classList.remove("hidden");
+            setTimeout(() => {
+                document.getElementById("tracking-message").classList.add("hidden");
+            }, 4000);
+        }
+    
+    </script>
+</body>
+</html>

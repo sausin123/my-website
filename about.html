@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family:  'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #060605e7;
+            color: #070707;
+            text-align: center;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+
+        .navbar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background: transparent ;
+            backdrop-filter: blur(0px);
+            padding: 1rem 0;
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            display: flex;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background:  #e6c08b;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 20px;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #705656;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .about-section, .contact-section {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .contact-details {
+            line-height: 1.8;
+        }
+        .team-member {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        .about-section, .contact-section, .team-section {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+        .about-section:hover, .contact-section:hover, .team-section:hover {
+            transform: translateY(-5px);
+        }
+        .team-members {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .team-member {
+            background: #e6c08b;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+        }
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .team-member:hover{
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>.</h1>
+    </header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">THE GOURMET SPOT</div>
+            
+            <div class="nav-links">
+                <a href="../html/index.html">Home</a>
+                <a href="../html/menu.html">Menu</a>
+                <a href="../html/reservations.html">Reservations</a>
+                <a href="../html/contact.html">Contact</a>
+                <a href="../html/feedback.html">Feedback</a>
+                <a href="../html/giftcard.html">Gift Card</a>
+                <a href="../html/about.html">About Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <section class="about-section">
+            <h2>About Us</h2>
+            <p>At The Gourmet Spot, we believe that dining is not just about food; it's an experience that engages all the senses. Nestled in the heart of Bengaluru, our online restaurant offers a curated selection of gourmet dishes crafted from the finest ingredients, ensuring every meal is a celebration of flavor and creativity..</p>
+            <p>Our menu features a diverse array of culinary delights, inspired by global cuisines and meticulously prepared by our talented chefs. From sumptuous appetizers to decadent desserts, each dish is designed to tantalize your taste buds and leave you craving more. We pride ourselves on using locally sourced ingredients whenever possible, supporting our community while delivering exceptional quality.
+
+                The Gourmet Spot is dedicated to providing an unparalleled dining experience, whether you're enjoying a cozy meal at home or celebrating a special occasion with loved ones. Our user-friendly online ordering system makes it easy to browse our menu and have your favorite dishes delivered right to your doorstep.</p>
+                <p>We understand that great food deserves great service. Our team is committed to ensuring that every aspect of your experience with us is seamless and enjoyable. Whether you have dietary restrictions or special requests, we are here to accommodate your needs and exceed your expectations.
+
+                    Join us at The Gourmet Spot, where every meal is an opportunity to indulge in the art of fine dining from the comfort of your own home. Experience the difference that passion and dedication can make in every bite!</p>
+        </section>
+
+       
+        <section class="contact-section">
+            <h2>Contact Us</h2>
+            <div class="contact-details">
+                <p><strong>Address:</strong> 560, 3rd Floor, 9th A Main, Indiranagar, behind Coffee Day, Bengaluru, Karnataka 560038, India</p>
+                <p><strong>Phone:</strong> +91 7981413166</p>
+                <p><strong>Email:</strong> thegourmet@gmail.com</p>
+                <p><strong>Opening Hours:</strong></p>
+                <ul>
+                    <li>Monday - Friday: 10 AM - 10 PM</li>
+                    <li>Saturday - Sunday: 9 AM - 11 PM</li>
+                </ul>
+                <button onclick="showMap()">View Location on Map</button>
+                <div id="map" class="hidden">
+                    <p>Map is loading...</p> 
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="team-section">
+            <h2>Our Team</h2>
+            <p>Meet our talented chefs and staff who bring creativity and excellence to every dish.</p>
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="../img/chef1.jpg" alt="Chef Priya Pate">
+                    <h3>Chef Priya Pate</h3>
+                    <p>Head Chef</p>
+                </div>
+                <div class="team-member">
+                    <img src="../img/chef2.jpg" alt="Chef Kunal Kaul">
+                    <h3>Chef Kunal Kaul</h3>
+                    <p>Restaurant Manager</p>
+                </div>
+                <div class="team-member">
+                    <img src="../img/chef3.jpg" alt="Chef Nalini Nair">
+                    <h3>Chef Nalini Nair</h3>
+                    <p>Sous Chef</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2025 The Gourmet Spot. All Rights Reserved.</p>
+    </footer>
+
+ 
+    <script>
+       
+
+        function showMap() {
+            const mapDiv = document.getElementById('map');
+            if (mapDiv.classList.contains('hidden')) {
+                mapDiv.classList.remove('hidden');
+                mapDiv.innerHTML = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.835434509374!2d-122.4194150846819!3d37.77492927975871!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064dfc8b6e7%3A0x7e5b9b4b8e8b6a6c!2s123%20Foodie%20Ln%2C%20San%20Francisco%2C%20CA%2094103%2C%20USA!5e0!3m2!1sen!2sin!4v1618888888888" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>';
+            } else {
+                mapDiv.classList.add('hidden');
+                mapDiv.innerHTML = '';
+            }
+        }
+    </script>
+</body>
+</html>
