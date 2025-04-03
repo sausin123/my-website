@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE GOURMET SPOT - Reservations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+       
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:  'Playfair Display', serif;
+        }
+
+        body {
+            background: #060605e7;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+
+        .navbar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background: transparent ;
+            backdrop-filter: blur(0px);
+            padding: 1rem 0;
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            display: flex;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background:  #e6c08b;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 20px;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b6b;
+        }
+
+        .section-title {
+          text-align: center; /* Centers text horizontally */
+          display: block; 
+          margin: 0 auto; /* Ensures it's centered */
+        }
+
+        .reservations-hero {
+            height: 70vh;
+            background:  url('../img/bg6.png') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0px;
+        }
+
+        .reservations-hero h2 {
+            font-size: 2.5rem;
+            background: #dedddd;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .seat-map-container {
+            padding: 1rem 0;
+        }
+
+        .seat-map {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 2rem;
+            max-width: 800px;
+            margin: 2rem auto;
+            perspective: 1000px;
+        }
+
+        .seat {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px 8px 2px 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: #3e746ef3;
+            transform-style: preserve-3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: rgb(255, 254, 254);
+        }
+
+        .seat::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #d5dad5;
+            border-radius: 0 0 3px 3px;
+        }
+
+        .seat.booked {
+            background: #af8a82;
+            cursor: not-allowed;
+        }
+
+        .seat.selected {
+            background: #c2b795fb;
+            transform: rotateX(45deg) translateZ(10px);
+            box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3);
+        }
+
+        .booking-form {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(33, 34, 34, 0.502);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(211, 204, 204, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: #8c6a60;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+       /* Centered Reservation Info Styling */
+/* Centered Reservation Info Styling */
+/* Centered Reservation Info Styling */
+.reservation-info-box {
+    width: 30%;
+    background: rgba(34, 34, 34, 0.9); /* Slight transparency for a modern look */
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+    margin: 30px auto; /* Centers horizontally */
+    text-align: center;
+}
+
+.reservation-info-box h3 {
+    margin-bottom: 10px; /* Add some space below the heading */
+    font-size: 24px; /* Larger font size for better visibility */
+    font-weight: bold;
+}
+
+.reservation-info-box p {
+    margin: 10px auto; /* Add spacing between rows */
+    font-size: 16px;
+    line-height: 1.5; /* Improve readability */
+}
+
+
+
+/* Seat Map Container */
+.seat-map-container {
+    margin-top: 20px;
+}
+
+
+      
+
+       
+        @media (max-width: 768px) {
+            .seat-map {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .reservations-hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+    
+    <body>
+        <nav class="navbar">
+            <div class="container nav-content">
+                <div class="logo">THE GOURMET SPOT</div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="menu.html">Menu</a>
+                    <a href="reservations.html">Reservations</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="feedback.html">Feedback</a>
+                    <a href="giftcard.html">Gift card</a>
+                    <a href="../html/about.html">About Us</a>
+                </div>
+            </div>
+        </nav>
+    
+        <section class="reservations-hero">
+            <h2>Book Your Table</h2>
+        </section>
+    
+        <!-- Centered Reservation Info Box -->
+        <div class="reservation-info-box">
+            <h3>Reservation Info</h3>
+            <p>1st Row: 2 seats</p>
+            <p>2nd & 3rd Row: 4 seats</p>
+            <p>4th Row: 5 seats</p>
+            <p>5th Row: 6 seats</p>
+        </div>
+    
+        <!-- Seat Map Section -->
+        <div class="seat-map-container">
+            <div class="container">
+                <div class="seat-map" id="seatMap"></div>
+            </div>
+        </div>
+    
+        <!-- Booking Form -->
+        <div class="booking-form">
+            <h2>Reservation Details</h2>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Gmail</label>
+                    <input type="email" id="email" placeholder="example@gmail.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="contact">Contact Number</label>
+                    <input type="tel" id="contact" placeholder="Enter your contact number" required />
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" required />
+                </div>
+                <div class="form-group">
+                    <label for="time">Time</label>
+                    <input type="time" id="time" required />
+                </div>
+                <div class="form-group">
+                    <label for="guests">Number of Guests</label>
+                    <input type="number" id="guests" min="1" required />
+                </div>
+                <button type="submit" class="submit-btn">Confirm
+        
+        
+        <!-- JavaScript remains unchanged -->
+    </body>
+    
+        
+    
+    
+
+    <script>
+       
+        const seatMap = document.getElementById('seatMap');
+        const totalSeats = 50;
+        let selectedSeats = [];
+
+        
+        for (let i = 1; i <= totalSeats; i++) {
+            const seat = document.createElement('div');
+            seat.className = Math.random() < 0.2 ? 'seat booked' : 'seat'; 
+            seat.textContent = i;
+            seat.addEventListener('click', toggleSeat);
+            seatMap.appendChild(seat);
+        }
+
+
+        function toggleSeat(e) {
+            const seat = e.target;
+            if (!seat.classList.contains('booked')) {
+                seat.classList.toggle('selected');
+                
+                
+                const seatNumber = seat.textContent;
+                if (seat.classList.contains('selected')) {
+                    selectedSeats.push(seatNumber);
+                } else {
+                    selectedSeats = selectedSeats.filter(num => num !== seatNumber);
+                }
+
+         
+                seat.style.transform = seat.classList.contains('selected') 
+                    ? 'rotateX(45deg) translateZ(15px)'
+                    : 'none';
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            const dateInput = document.getElementById("date");
+            const today = new Date();
+            const currentYear = 2025; // Restrict to 2025 only
+            const minDate = `${currentYear}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            const maxDate = `${currentYear}-12-31`;
+            dateInput.setAttribute("min", minDate);
+            dateInput.setAttribute("max", maxDate);
+        });
+
+  
+        const bookingForm = document.getElementById('bookingForm');
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (selectedSeats.length === 0) {
+                alert('Please select at least one seat.');
+                return;
+            }
+
+           
+            selectedSeats.forEach(seatNumber => {
+                const seat = Array.from(seatMap.children).find(seat => seat.textContent === seatNumber);
+                if (seat) {
+                    seat.classList.remove('selected');
+                    seat.classList.add('booked');
+                    seat.style.transform = 'none'; // Reset 3D effect
+                    seat.style.backgroundColor = '#f44336'; // Red color for booked seats
+                    seat.style.cursor = 'not-allowed'; // Disable further clicks
+                }
+            });
+
+            // Show confirmation message
+            alert(`Reservation confirmed for seat(s): ${selectedSeats.join(', ')}. We look forward to seeing you!`);
+
+            // Reset form and selected seats
+            bookingForm.reset();
+            selectedSeats = [];
+        });
+    </script>
+</body>
+</html>

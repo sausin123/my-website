@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family:  'Playfair Display', serif;
+            background: url('../img/MENU1.jpg') no-repeat center center fixed; 
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .payment-container {
+            background: #b5b3b1ba;
+            padding: 30px;
+            border-radius: 10px;
+        
+            width: 500px;
+            text-align: center;
+        }
+        button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            background-color: rgb(42, 52, 62);
+            color: beige;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color:  #2d3f53; }
+        .card-details input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .hidden { display: none; }
+        .error { color: red; font-size: 14px; }
+        .popup {
+            display: none;
+            position: fixed;
+            background: #17a2b8;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+        }
+        #back-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: auto;
+            padding: 8px 12px;
+            font-size: 14px;
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h2>Restaurant Payment</h2>
+        <div id="order-message">Select your payment method.</div>
+        <div id="order-confirmation"></div>
+        <button id="cash-on-delivery-btn" onclick="showCashOnDelivery()">On Cash</button>
+        <button id="online-payment-btn" onclick="showPaymentMethods()">Online Payment</button>
+        <button id="back-btn" class="hidden" onclick="goBack()">Back</button>
+        <p id="message"></p>
+         <div id="processing" class="hidden">Processing Payment...</div>
+    </div>
+    <div id="liveTrackingPopup" class="popup">Want to know when your food arrives? <button onclick="trackOrder()">Track Now</button></div>
+    
+
+    <script>
+        function showCashOnDelivery() {
+            document.getElementById('order-message').innerText = 'You chose Cash on Delivery.';
+            document.getElementById('order-confirmation').innerHTML = `<button onclick="confirmOrder()">Place Order</button>`;
+            document.getElementById('cash-on-delivery-btn').classList.add('hidden');
+            document.getElementById('online-payment-btn').classList.add('hidden');
+        }
+        
+        function confirmOrder() {
+            document.getElementById("message").innerText = `Your order is confirmed! You will be served soon.`;
+            showPopup();
+        }
+        
+        function showPopup() {
+            let popup = document.getElementById("liveTrackingPopup");
+            popup.style.display = 'block';
+            setTimeout(() => popup.style.display = 'none', 5000);
+        }
+        
+        function showPaymentMethods() {
+            document.getElementById('cash-on-delivery-btn').classList.add('hidden');
+            document.getElementById('online-payment-btn').classList.add('hidden');
+            document.getElementById('order-message').innerText = 'Choose a payment option:';
+            document.getElementById('order-confirmation').innerHTML = `
+                <div>
+                    <h3>UPI Payment</h3>
+                    <button onclick="selectPayment('Google Pay / Paytm UPI', 'upi')">Google Pay / Paytm UPI</button>
+                </div>
+                <button onclick="selectPayment('QR Code Payment', 'qr')">QR Code Payment</button>
+                <button onclick="selectPayment('Credit/Debit Card', 'card')">Credit/Debit Card</button>
+            `;
+        }
+        
+        function selectPayment(method, type) {
+            let confirmationDiv = document.getElementById('order-confirmation');
+            let inputField = '';
+            if (type === 'upi') {
+                inputField = `<input type='text' id='payment-input' placeholder='Enter UPI ID' required>
+                              <span class="error" id="upi-error"></span>`;
+            } else if (type === 'card') {
+                inputField = `
+                    <div class="card-details">
+                        <input type='text' id='card-number' placeholder='Enter Card Number' required>
+                        <span class="error" id="card-error"></span>
+                        <input type='month' id='expiry-date' required>
+                        <input type='password' id='cvv' placeholder='CVV' maxlength='3' required>
+                    </div>
+                `;
+            } else if (type === 'qr') {
+                inputField = `<p>Scan the QR code below to complete the payment:</p>
+                              <img src="../img/qr.png" alt='QR Code' width='200'>`;
+            }
+            confirmationDiv.innerHTML = `<h3>Payment via ${method}</h3>${inputField}<button onclick="processPayment()">Pay Now</button>`;
+            document.getElementById('back-btn').classList.remove('hidden');
+        }
+        function processPayment() {
+            let upiInput = document.getElementById("payment-input");
+            let upiError = document.getElementById("upi-error");
+            if (upiInput && upiInput.value.trim() === "") {
+                upiError.innerText = "UPI ID is required.";
+                return;
+            }
+            
+            let cardNumber = document.getElementById("card-number");
+            let cardError = document.getElementById("card-error");
+            if (cardNumber && !validateCard(cardNumber.value)) {
+                cardError.innerText = "Invalid card number";
+                return;
+            }
+            document.getElementById('processing').style.display = "block";
+            setTimeout(() => {
+                document.getElementById('processing').style.display = "none";
+                document.getElementById("message").innerText = "Your payment was successful!";
+                showPopup('orderPopup');
+            }, 3000);
+             
+        function validateCard(number) {
+            return /^\d{16}$/.test(number);
+        }
+        function toggleButtons() {
+            document.getElementById('cash-on-delivery-btn').classList.add('hidden');
+            document.getElementById('online-payment-btn').classList.add('hidden');
+            document.getElementById('back-btn').classList.remove('hidden');
+        }
+        
+        function goBack() {
+            document.getElementById('order-message').innerText = 'Select your payment method.';
+            document.getElementById('order-confirmation').innerHTML = '';
+            document.getElementById('cash-on-delivery-btn').classList.remove('hidden');
+            document.getElementById('online-payment-btn').classList.remove('hidden');
+            document.getElementById('back-btn').classList.add('hidden');
+        }
+       
+        }
+    </script>
+</body>
+</html>
