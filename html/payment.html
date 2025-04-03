@@ -8,7 +8,7 @@
     <style>
         body {
             font-family:  'Playfair Display', serif;
-            background: url('../img/MENU1.jpg') no-repeat center center fixed; 
+            background: url('img/MENU1.jpg') no-repeat center center fixed; 
             background-size: cover;
             display: flex;
             justify-content: center;
@@ -131,7 +131,7 @@
                 `;
             } else if (type === 'qr') {
                 inputField = `<p>Scan the QR code below to complete the payment:</p>
-                              <img src="../img/qr.png" alt='QR Code' width='200'>`;
+                              <img src="img/qr.png" alt='QR Code' width='200'>`;
             }
             confirmationDiv.innerHTML = `<h3>Payment via ${method}</h3>${inputField}<button onclick="processPayment()">Pay Now</button>`;
             document.getElementById('back-btn').classList.remove('hidden');
